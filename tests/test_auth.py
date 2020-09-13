@@ -5,7 +5,7 @@ from tests.async_mock import MagicMock, patch
 from botocore.exceptions import ClientError
 import pytest
 
-from hass_nabucasa import auth as auth_api
+from hass_uniocloud import auth as auth_api
 
 
 @pytest.fixture
@@ -169,7 +169,7 @@ async def test_async_setup(cloud_mock):
     on_disconnect = cloud_mock.iot.mock_calls[1][1][0]
 
     with patch("random.randint", return_value=0), patch(
-        "hass_nabucasa.auth.CognitoAuth.async_renew_access_token"
+        "hass_uniocloud.auth.CognitoAuth.async_renew_access_token"
     ) as mock_renew:
         await on_connect()
         # Let handle token sleep once

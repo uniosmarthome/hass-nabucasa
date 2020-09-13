@@ -5,7 +5,7 @@ import tempfile
 from typing import Any
 from tests.async_mock import Mock
 
-from hass_nabucasa.client import CloudClient
+from hass_uniocloud.client import CloudClient
 
 
 class TestClient(CloudClient):

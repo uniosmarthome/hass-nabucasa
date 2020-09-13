@@ -5,7 +5,7 @@ from tests.async_mock import AsyncMock, patch, MagicMock, Mock
 from aiohttp import WSMsgType
 import pytest
 
-from hass_nabucasa import iot, iot_base
+from hass_uniocloud import iot, iot_base
 
 
 @pytest.fixture
@@ -180,7 +180,7 @@ async def test_send_message_answer(loop, cloud_mock_iot):
 
     uuid = 5
 
-    with patch("hass_nabucasa.iot.uuid.uuid4", return_value=MagicMock(hex=uuid)):
+    with patch("hass_uniocloud.iot.uuid.uuid4", return_value=MagicMock(hex=uuid)):
         send_task = loop.create_task(
             cloud_iot.async_send_message("webhook", {"msg": "yo"})
         )

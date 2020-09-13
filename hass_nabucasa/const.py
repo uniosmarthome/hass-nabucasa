@@ -1,4 +1,4 @@
-"""Constants for the hass-nabucasa."""
+"""Constants for the hass-uniocloud."""
 CONFIG_DIR = ".cloud"
 
 REQUEST_TIMEOUT = 10

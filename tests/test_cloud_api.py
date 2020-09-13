@@ -1,7 +1,7 @@
 """Test cloud API."""
 
 
-from hass_nabucasa import cloud_api
+from hass_uniocloud import cloud_api
 
 
 async def test_create_cloudhook(auth_cloud_mock, aioclient_mock):
@@ -26,9 +26,9 @@ async def test_remote_register(auth_cloud_mock, aioclient_mock):
     aioclient_mock.post(
         "https://example.com/bla/register_instance",
         json={
-            "domain": "test.dui.nabu.casa",
-            "email": "test@nabucasa.inc",
-            "server": "rest-remote.nabu.casa",
+            "domain": "test.dui.unio.cloud",
+            "email": "test@uniocloud.com",
+            "server": "rest-remote.unio.cloud",
         },
     )
     auth_cloud_mock.id_token = "mock-id-token"
@@ -37,9 +37,9 @@ async def test_remote_register(auth_cloud_mock, aioclient_mock):
     resp = await cloud_api.async_remote_register(auth_cloud_mock)
     assert len(aioclient_mock.mock_calls) == 1
     assert await resp.json() == {
-        "domain": "test.dui.nabu.casa",
-        "email": "test@nabucasa.inc",
-        "server": "rest-remote.nabu.casa",
+        "domain": "test.dui.unio.cloud",
+        "email": "test@uniocloud.com",
+        "server": "rest-remote.unio.cloud",
     }
 
 
@@ -49,7 +49,7 @@ async def test_remote_token(auth_cloud_mock, aioclient_mock):
         "https://example.com/bla/snitun_token",
         json={
             "token": "123456",
-            "server": "rest-remote.nabu.casa",
+            "server": "rest-remote.unio.cloud",
             "valid": 12345,
             "throttling": 400,
         },
@@ -61,7 +61,7 @@ async def test_remote_token(auth_cloud_mock, aioclient_mock):
     assert len(aioclient_mock.mock_calls) == 1
     assert await resp.json() == {
         "token": "123456",
-        "server": "rest-remote.nabu.casa",
+        "server": "rest-remote.unio.cloud",
         "valid": 12345,
         "throttling": 400,
     }

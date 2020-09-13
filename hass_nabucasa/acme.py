@@ -41,8 +41,8 @@ class AcmeChallengeError(AcmeClientError):
     """Raise if a challenge fails."""
 
 
-class AcmeNabuCasaError(AcmeClientError):
-    """Raise erros on nabucasa API."""
+class AcmeUnioCloudError(AcmeClientError):
+    """Raise erros on uniocloud API."""
 
 
 @attr.s
@@ -368,8 +368,8 @@ class AcmeHandler:
                 )
             assert resp.status == 200
         except (asyncio.TimeoutError, AssertionError):
-            _LOGGER.error("Can't set challenge token to NabuCasa DNS!")
-            raise AcmeNabuCasaError() from None
+            _LOGGER.error("Can't set challenge token to UnioCloud DNS!")
+            raise AcmeUnioCloudError() from None
 
         # Finish validation
         try:
@@ -384,7 +384,7 @@ class AcmeHandler:
                         self.cloud, challenge.validation
                     )
             except asyncio.TimeoutError:
-                _LOGGER.error("Failed to clean up challenge from NabuCasa DNS!")
+                _LOGGER.error("Failed to clean up challenge from UnioCloud DNS!")
 
     async def reset_acme(self) -> None:
         """Revoke and deactivate acme certificate/account."""

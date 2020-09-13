@@ -3,7 +3,7 @@ import pytest
 
 import aiohttp
 
-from hass_nabucasa import thingtalk
+from hass_uniocloud import thingtalk
 
 API_URL = "https://example.com"
 CONVERT_URL = f"{API_URL}/convert"

@@ -5,14 +5,14 @@ from tests.async_mock import patch, Mock
 
 import pytest
 
-from hass_nabucasa.const import (
+from hass_uniocloud.const import (
     DISPATCH_REMOTE_BACKEND_DOWN,
     DISPATCH_REMOTE_BACKEND_UP,
     DISPATCH_REMOTE_CONNECT,
     DISPATCH_REMOTE_DISCONNECT,
 )
-from hass_nabucasa.remote import RemoteUI, SubscriptionExpired
-from hass_nabucasa.utils import utcnow
+from hass_uniocloud.remote import RemoteUI, SubscriptionExpired
+from hass_uniocloud.utils import utcnow
 
 from .common import MockAcme, MockSnitun
 
@@ -21,7 +21,7 @@ from .common import MockAcme, MockSnitun
 def ignore_context():
     """Ignore ssl context."""
     with patch(
-        "hass_nabucasa.remote.RemoteUI._create_context", return_value=None
+        "hass_uniocloud.remote.RemoteUI._create_context", return_value=None
     ) as context:
         yield context
 
@@ -29,14 +29,14 @@ def ignore_context():
 @pytest.fixture
 def acme_mock():
     """Mock ACME client."""
-    with patch("hass_nabucasa.remote.AcmeHandler", new_callable=MockAcme) as acme:
+    with patch("hass_uniocloud.remote.AcmeHandler", new_callable=MockAcme) as acme:
         yield acme
 
 
 @pytest.fixture
 def valid_acme_mock(acme_mock):
     """Mock ACME client with valid cert."""
-    acme_mock.common_name = "test.dui.nabu.casa"
+    acme_mock.common_name = "test.dui.unio.cloud"
     acme_mock.expire_date = utcnow() + timedelta(days=60)
     return acme_mock
 
@@ -44,7 +44,7 @@ def valid_acme_mock(acme_mock):
 @pytest.fixture
 async def snitun_mock():
     """Mock ACME client."""
-    with patch("hass_nabucasa.remote.SniTunClientAioHttp", MockSnitun()) as snitun:
+    with patch("hass_uniocloud.remote.SniTunClientAioHttp", MockSnitun()) as snitun:
         yield snitun
 
 
@@ -66,16 +66,16 @@ async def test_load_backend_exists_cert(
     aioclient_mock.post(
         "https://test.local/api/register_instance",
         json={
-            "domain": "test.dui.nabu.casa",
-            "email": "test@nabucasa.inc",
-            "server": "rest-remote.nabu.casa",
+            "domain": "test.dui.unio.cloud",
+            "email": "test@uniocloud.com",
+            "server": "rest-remote.unio.cloud",
         },
     )
     aioclient_mock.post(
         "https://test.local/api/snitun_token",
         json={
             "token": "test-token",
-            "server": "rest-remote.nabu.casa",
+            "server": "rest-remote.unio.cloud",
             "valid": valid.timestamp(),
             "throttling": 400,
         },
@@ -83,20 +83,20 @@ async def test_load_backend_exists_cert(
 
     assert not remote.is_connected
     await remote.start()
-    assert remote.snitun_server == "rest-remote.nabu.casa"
-    assert remote.instance_domain == "test.dui.nabu.casa"
+    assert remote.snitun_server == "rest-remote.unio.cloud"
+    assert remote.instance_domain == "test.dui.unio.cloud"
 
     assert not valid_acme_mock.call_issue
     assert valid_acme_mock.init_args == (
         auth_cloud_mock,
-        "test.dui.nabu.casa",
-        "test@nabucasa.inc",
+        "test.dui.unio.cloud",
+        "test@uniocloud.com",
     )
     assert valid_acme_mock.call_hardening
     assert snitun_mock.call_start
     assert snitun_mock.init_args == (auth_cloud_mock.client.aiohttp_runner, None)
     assert snitun_mock.init_kwarg == {
-        "snitun_server": "rest-remote.nabu.casa",
+        "snitun_server": "rest-remote.unio.cloud",
         "snitun_port": 443,
     }
 
@@ -124,16 +124,16 @@ async def test_load_backend_not_exists_cert(
     aioclient_mock.post(
         "https://test.local/api/register_instance",
         json={
-            "domain": "test.dui.nabu.casa",
-            "email": "test@nabucasa.inc",
-            "server": "rest-remote.nabu.casa",
+            "domain": "test.dui.unio.cloud",
+            "email": "test@uniocloud.com",
+            "server": "rest-remote.unio.cloud",
         },
     )
     aioclient_mock.post(
         "https://test.local/api/snitun_token",
         json={
             "token": "test-token",
-            "server": "rest-remote.nabu.casa",
+            "server": "rest-remote.unio.cloud",
             "valid": valid.timestamp(),
             "throttling": 400,
         },
@@ -143,18 +143,18 @@ async def test_load_backend_not_exists_cert(
     await remote.start()
     await asyncio.sleep(0.1)
 
-    assert remote.snitun_server == "rest-remote.nabu.casa"
+    assert remote.snitun_server == "rest-remote.unio.cloud"
     assert acme_mock.call_issue
     assert acme_mock.init_args == (
         auth_cloud_mock,
-        "test.dui.nabu.casa",
-        "test@nabucasa.inc",
+        "test.dui.unio.cloud",
+        "test@uniocloud.com",
     )
     assert acme_mock.call_hardening
     assert snitun_mock.call_start
     assert snitun_mock.init_args == (auth_cloud_mock.client.aiohttp_runner, None)
     assert snitun_mock.init_kwarg == {
-        "snitun_server": "rest-remote.nabu.casa",
+        "snitun_server": "rest-remote.unio.cloud",
         "snitun_port": 443,
     }
 
@@ -177,16 +177,16 @@ async def test_load_and_unload_backend(
     aioclient_mock.post(
         "https://test.local/api/register_instance",
         json={
-            "domain": "test.dui.nabu.casa",
-            "email": "test@nabucasa.inc",
-            "server": "rest-remote.nabu.casa",
+            "domain": "test.dui.unio.cloud",
+            "email": "test@uniocloud.com",
+            "server": "rest-remote.unio.cloud",
         },
     )
     aioclient_mock.post(
         "https://test.local/api/snitun_token",
         json={
             "token": "test-token",
-            "server": "rest-remote.nabu.casa",
+            "server": "rest-remote.unio.cloud",
             "valid": valid.timestamp(),
             "throttling": 400,
         },
@@ -195,19 +195,19 @@ async def test_load_and_unload_backend(
     await remote.start()
     await asyncio.sleep(0.1)
 
-    assert remote.snitun_server == "rest-remote.nabu.casa"
+    assert remote.snitun_server == "rest-remote.unio.cloud"
     assert not valid_acme_mock.call_issue
     assert valid_acme_mock.init_args == (
         auth_cloud_mock,
-        "test.dui.nabu.casa",
-        "test@nabucasa.inc",
+        "test.dui.unio.cloud",
+        "test@uniocloud.com",
     )
     assert valid_acme_mock.call_hardening
     assert snitun_mock.call_start
     assert not snitun_mock.call_stop
     assert snitun_mock.init_args == (auth_cloud_mock.client.aiohttp_runner, None)
     assert snitun_mock.init_kwarg == {
-        "snitun_server": "rest-remote.nabu.casa",
+        "snitun_server": "rest-remote.unio.cloud",
         "snitun_port": 443,
     }
 
@@ -236,37 +236,37 @@ async def test_load_backend_exists_wrong_cert(
     aioclient_mock.post(
         "https://test.local/api/register_instance",
         json={
-            "domain": "test.dui.nabu.casa",
-            "email": "test@nabucasa.inc",
-            "server": "rest-remote.nabu.casa",
+            "domain": "test.dui.unio.cloud",
+            "email": "test@uniocloud.com",
+            "server": "rest-remote.unio.cloud",
         },
     )
     aioclient_mock.post(
         "https://test.local/api/snitun_token",
         json={
             "token": "test-token",
-            "server": "rest-remote.nabu.casa",
+            "server": "rest-remote.unio.cloud",
             "valid": valid.timestamp(),
             "throttling": 400,
         },
     )
 
-    valid_acme_mock.common_name = "wrong.dui.nabu.casa"
+    valid_acme_mock.common_name = "wrong.dui.unio.cloud"
     await remote.load_backend()
     await asyncio.sleep(0.1)
 
-    assert remote.snitun_server == "rest-remote.nabu.casa"
+    assert remote.snitun_server == "rest-remote.unio.cloud"
     assert valid_acme_mock.call_reset
     assert valid_acme_mock.init_args == (
         auth_cloud_mock,
-        "test.dui.nabu.casa",
-        "test@nabucasa.inc",
+        "test.dui.unio.cloud",
+        "test@uniocloud.com",
     )
     assert valid_acme_mock.call_hardening
     assert snitun_mock.call_start
     assert snitun_mock.init_args == (auth_cloud_mock.client.aiohttp_runner, None)
     assert snitun_mock.init_kwarg == {
-        "snitun_server": "rest-remote.nabu.casa",
+        "snitun_server": "rest-remote.unio.cloud",
         "snitun_port": 443,
     }
 
@@ -286,16 +286,16 @@ async def test_call_disconnect(
     aioclient_mock.post(
         "https://test.local/api/register_instance",
         json={
-            "domain": "test.dui.nabu.casa",
-            "email": "test@nabucasa.inc",
-            "server": "rest-remote.nabu.casa",
+            "domain": "test.dui.unio.cloud",
+            "email": "test@uniocloud.com",
+            "server": "rest-remote.unio.cloud",
         },
     )
     aioclient_mock.post(
         "https://test.local/api/snitun_token",
         json={
             "token": "test-token",
-            "server": "rest-remote.nabu.casa",
+            "server": "rest-remote.unio.cloud",
             "valid": valid.timestamp(),
             "throttling": 400,
         },
@@ -323,16 +323,16 @@ async def test_load_backend_no_autostart(
     aioclient_mock.post(
         "https://test.local/api/register_instance",
         json={
-            "domain": "test.dui.nabu.casa",
-            "email": "test@nabucasa.inc",
-            "server": "rest-remote.nabu.casa",
+            "domain": "test.dui.unio.cloud",
+            "email": "test@uniocloud.com",
+            "server": "rest-remote.unio.cloud",
         },
     )
     aioclient_mock.post(
         "https://test.local/api/snitun_token",
         json={
             "token": "test-token",
-            "server": "rest-remote.nabu.casa",
+            "server": "rest-remote.unio.cloud",
             "valid": valid.timestamp(),
             "throttling": 400,
         },
@@ -342,7 +342,7 @@ async def test_load_backend_no_autostart(
     await remote.load_backend()
     await asyncio.sleep(0.1)
 
-    assert remote.snitun_server == "rest-remote.nabu.casa"
+    assert remote.snitun_server == "rest-remote.unio.cloud"
     assert not valid_acme_mock.call_issue
     assert valid_acme_mock.call_hardening
     assert snitun_mock.call_start
@@ -370,16 +370,16 @@ async def test_get_certificate_details(
     aioclient_mock.post(
         "https://test.local/api/register_instance",
         json={
-            "domain": "test.dui.nabu.casa",
-            "email": "test@nabucasa.inc",
-            "server": "rest-remote.nabu.casa",
+            "domain": "test.dui.unio.cloud",
+            "email": "test@uniocloud.com",
+            "server": "rest-remote.unio.cloud",
         },
     )
     aioclient_mock.post(
         "https://test.local/api/snitun_token",
         json={
             "token": "test-token",
-            "server": "rest-remote.nabu.casa",
+            "server": "rest-remote.unio.cloud",
             "valid": valid.timestamp(),
             "throttling": 400,
         },
@@ -411,16 +411,16 @@ async def test_certificate_task_no_backend(
     aioclient_mock.post(
         "https://test.local/api/register_instance",
         json={
-            "domain": "test.dui.nabu.casa",
-            "email": "test@nabucasa.inc",
-            "server": "rest-remote.nabu.casa",
+            "domain": "test.dui.unio.cloud",
+            "email": "test@uniocloud.com",
+            "server": "rest-remote.unio.cloud",
         },
     )
     aioclient_mock.post(
         "https://test.local/api/snitun_token",
         json={
             "token": "test-token",
-            "server": "rest-remote.nabu.casa",
+            "server": "rest-remote.unio.cloud",
             "valid": valid.timestamp(),
             "throttling": 400,
         },
@@ -428,7 +428,7 @@ async def test_certificate_task_no_backend(
 
     acme_mock.expire_date = valid
 
-    with patch("hass_nabucasa.utils.next_midnight", return_value=0), patch(
+    with patch("hass_uniocloud.utils.next_midnight", return_value=0), patch(
         "random.randint", return_value=0
     ):
         remote._acme_task = loop.create_task(remote._certificate_handler())
@@ -448,16 +448,16 @@ async def test_certificate_task_renew_cert(
     aioclient_mock.post(
         "https://test.local/api/register_instance",
         json={
-            "domain": "test.dui.nabu.casa",
-            "email": "test@nabucasa.inc",
-            "server": "rest-remote.nabu.casa",
+            "domain": "test.dui.unio.cloud",
+            "email": "test@uniocloud.com",
+            "server": "rest-remote.unio.cloud",
         },
     )
     aioclient_mock.post(
         "https://test.local/api/snitun_token",
         json={
             "token": "test-token",
-            "server": "rest-remote.nabu.casa",
+            "server": "rest-remote.unio.cloud",
             "valid": valid.timestamp(),
             "throttling": 400,
         },
@@ -465,7 +465,7 @@ async def test_certificate_task_renew_cert(
 
     acme_mock.expire_date = utcnow() + timedelta(days=-40)
 
-    with patch("hass_nabucasa.utils.next_midnight", return_value=0), patch(
+    with patch("hass_uniocloud.utils.next_midnight", return_value=0), patch(
         "random.randint", return_value=0
     ):
         remote._acme_task = loop.create_task(remote._certificate_handler())

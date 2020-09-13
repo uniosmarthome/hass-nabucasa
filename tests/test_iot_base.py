@@ -5,7 +5,7 @@ from tests.async_mock import AsyncMock, patch, MagicMock, Mock
 from aiohttp import WSMsgType, client_exceptions
 import pytest
 
-from hass_nabucasa import iot_base, auth as auth_api
+from hass_uniocloud import iot_base, auth as auth_api
 
 
 class MockIoT(iot_base.BaseIoT):
@@ -55,7 +55,7 @@ async def test_cloud_getting_disconnected_by_server(
     mock_iot_client.receive = AsyncMock(return_value=MagicMock(type=WSMsgType.CLOSING))
 
     with patch(
-        "hass_nabucasa.iot_base.BaseIoT._wait_retry",
+        "hass_uniocloud.iot_base.BaseIoT._wait_retry",
         side_effect=[None, asyncio.CancelledError],
     ):
         await conn.connect()

@@ -1,6 +1,6 @@
 // See https://aka.ms/vscode-remote/devcontainer.json for format details.
 {
-	"name": "Hass-NabuCasa Dev",
+	"name": "Hass-UnioCloud Dev",
 	"context": "..",
 	"dockerFile": "Dockerfile",
 	"postCreateCommand": "pip3 install -e .",

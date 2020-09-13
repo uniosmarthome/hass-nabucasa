@@ -4,7 +4,7 @@ from tests.async_mock import AsyncMock, Mock
 
 from aiohttp import web
 import pytest
-from hass_nabucasa import account_link
+from hass_uniocloud import account_link
 
 
 async def create_account_link_server(aiohttp_client, handle_server_msgs):

@@ -3,7 +3,7 @@ from tests.async_mock import AsyncMock, Mock
 
 import pytest
 
-from hass_nabucasa import cloudhooks
+from hass_uniocloud import cloudhooks
 
 
 @pytest.fixture
@@ -21,14 +21,14 @@ async def test_enable(mock_cloudhooks, aioclient_mock):
         "https://webhook-create.url",
         json={
             "cloudhook_id": "mock-cloud-id",
-            "url": "https://hooks.nabu.casa/ZXCZCXZ",
+            "url": "https://hooks.unio.cloud/ZXCZCXZ",
         },
     )
 
     hook = {
         "webhook_id": "mock-webhook-id",
         "cloudhook_id": "mock-cloud-id",
-        "cloudhook_url": "https://hooks.nabu.casa/ZXCZCXZ",
+        "cloudhook_url": "https://hooks.unio.cloud/ZXCZCXZ",
         "managed": False,
     }
 
@@ -48,7 +48,7 @@ async def test_disable(mock_cloudhooks):
         "mock-webhook-id": {
             "webhook_id": "mock-webhook-id",
             "cloudhook_id": "mock-cloud-id",
-            "cloudhook_url": "https://hooks.nabu.casa/ZXCZCXZ",
+            "cloudhook_url": "https://hooks.unio.cloud/ZXCZCXZ",
         }
     }
 
@@ -72,14 +72,14 @@ async def test_create_without_connected(mock_cloudhooks, aioclient_mock):
         "https://webhook-create.url",
         json={
             "cloudhook_id": "mock-cloud-id",
-            "url": "https://hooks.nabu.casa/ZXCZCXZ",
+            "url": "https://hooks.unio.cloud/ZXCZCXZ",
         },
     )
 
     hook = {
         "webhook_id": "mock-webhook-id",
         "cloudhook_id": "mock-cloud-id",
-        "cloudhook_url": "https://hooks.nabu.casa/ZXCZCXZ",
+        "cloudhook_url": "https://hooks.unio.cloud/ZXCZCXZ",
         "managed": True,
     }
 

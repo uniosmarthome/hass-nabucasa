@@ -253,7 +253,7 @@ def mock_aiohttp_client(loop):
     mocker = AiohttpClientMocker()
 
     with mock.patch(
-        "hass_nabucasa.Cloud.websession", new_callable=mock.PropertyMock
+        "hass_uniocloud.Cloud.websession", new_callable=mock.PropertyMock
     ) as mock_websession:
         session = mocker.create_session(loop)
         mock_websession.return_value = session

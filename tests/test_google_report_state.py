@@ -2,8 +2,8 @@
 import asyncio
 from tests.async_mock import AsyncMock, Mock, patch
 
-from hass_nabucasa import iot_base
-from hass_nabucasa.google_report_state import GoogleReportState, ErrorResponse
+from hass_uniocloud import iot_base
+from hass_uniocloud.google_report_state import GoogleReportState, ErrorResponse
 
 
 async def create_grs(loop, ws_server, server_msg_handler) -> GoogleReportState:

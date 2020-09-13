@@ -1,7 +1,7 @@
 """Test for voice functions."""
 from datetime import timedelta
 
-import hass_nabucasa.voice as voice
+import hass_uniocloud.voice as voice
 
 
 async def test_token_handling(auth_cloud_mock, aioclient_mock):

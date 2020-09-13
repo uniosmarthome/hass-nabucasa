@@ -56,7 +56,7 @@ def cloud_client(cloud_mock):
 @pytest.fixture
 def mock_cognito():
     """Mock warrant."""
-    with patch("hass_nabucasa.auth.CognitoAuth._cognito") as mock_cog:
+    with patch("hass_uniocloud.auth.CognitoAuth._cognito") as mock_cog:
         yield mock_cog()
 
 
@@ -70,7 +70,7 @@ def mock_iot_client(cloud_mock):
     # Trigger cancelled error to avoid reconnect.
     org_websession = cloud_mock.websession
     with patch(
-        "hass_nabucasa.iot_base.BaseIoT._wait_retry", side_effect=asyncio.CancelledError
+        "hass_uniocloud.iot_base.BaseIoT._wait_retry", side_effect=asyncio.CancelledError
     ):
         websession.ws_connect.side_effect = AsyncMock(return_value=client)
         cloud_mock.websession = websession
