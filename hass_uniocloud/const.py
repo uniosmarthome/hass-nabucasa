@@ -17,8 +17,8 @@ DISPATCH_REMOTE_BACKEND_DOWN = "remote_backend_down"
 
 SERVERS = {
     "production": {
-        "cognito_client_id": "60i2uvhvbiref2mftj7rgcrt9u",
-        "user_pool_id": "us-east-1_87ll5WOP8",
+        "cognito_client_id": "66srmrqakinvc3fd8lh7gulm9g",
+        "user_pool_id": "us-east-1_vzZfERFLP",
         "region": "us-east-1",
         "relayer": "wss://cloud.nabucasa.com/websocket",
         "google_actions_report_state_url": "https://remotestate.nabucasa.com",
@@ -26,7 +26,7 @@ SERVERS = {
             "https://stripe-api.nabucasa.com/payments/" "subscription_info"
         ),
         "cloudhook_create_url": "https://webhooks-api.nabucasa.com/generate",
-        "remote_api_url": "https://remote-sni-api.nabucasa.com",
+        "remote_api_url": "https://cloud.uniosmarthome.com/remote",
         "alexa_access_token_url": "https://alexa-api.nabucasa.com/access_token",
         "account_link_url": "https://account-link.nabucasa.com",
         "voice_api_url": "https://voice-api.nabucasa.com",

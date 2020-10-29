@@ -253,8 +253,8 @@ class RemoteUI:
             _LOGGER.debug("Don't need refresh snitun token")
             return
 
-        if self.cloud.subscription_expired:
-            raise SubscriptionExpired()
+        # if self.cloud.subscription_expired:
+        #    raise SubscriptionExpired()
 
         # Generate session token
         aes_key, aes_iv = generate_aes_keyset()
