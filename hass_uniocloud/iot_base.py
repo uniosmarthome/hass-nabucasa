@@ -21,6 +21,25 @@ class NotConnected(Exception):
     """Exception raised when trying to handle unknown handler."""
 
 
+class MockWs:
+    def __init__(self):
+        self.closed = False
+        self.type = WSMsgType.CLOSED
+        self._logger = logging.getLogger("mock ws")
+
+    async def send_json(self, json):
+        self._logger.warning(json)
+
+    async def close(self):
+        self._logger.warning("websocket close")
+        self.closed = True
+
+    async def receive(self):
+        while not self.closed:
+            await asyncio.sleep(1)
+        return self
+
+
 class BaseIoT:
     """Class to manage the IoT connection."""
 
@@ -55,7 +74,7 @@ class BaseIoT:
     @property
     def require_subscription(self) -> bool:
         """If the server requires a valid subscription."""
-        return True
+        return False
 
     def async_handle_message(self, msg) -> None:
         """Handle incoming message.
@@ -161,12 +180,9 @@ class BaseIoT:
 
         client = None
         disconnect_warn = None
+
         try:
-            self.client = client = await self.cloud.websession.ws_connect(
-                self.ws_server_url,
-                heartbeat=55,
-                headers={hdrs.AUTHORIZATION: "Bearer {}".format(self.cloud.id_token)},
-            )
+            self.client = client = MockWs()
             self.tries = 0
 
             self._logger.info("Connected")
