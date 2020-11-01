@@ -20,10 +20,10 @@ SERVERS = {
         "cognito_client_id": "66srmrqakinvc3fd8lh7gulm9g",
         "user_pool_id": "us-east-1_vzZfERFLP",
         "region": "us-east-1",
-        "relayer": "wss://cloud.nabucasa.com/websocket",
+        "relayer": "wss://cloud.uniosmarthome.com/websocket",
         "google_actions_report_state_url": "https://remotestate.nabucasa.com",
         "subscription_info_url": (
-            "https://stripe-api.nabucasa.com/payments/" "subscription_info"
+            "https://cloud.uniosmarthome.com/payments/" "subscription_info"
         ),
         "cloudhook_create_url": "https://webhooks-api.nabucasa.com/generate",
         "remote_api_url": "https://cloud.uniosmarthome.com/remote",

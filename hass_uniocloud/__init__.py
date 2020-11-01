@@ -169,9 +169,18 @@ class Cloud:
     async def fetch_subscription_info(self):
         """Fetch subscription info."""
         await self.auth.async_check_token()
-        return await self.websession.get(
-            self.subscription_info_url, headers={"authorization": self.id_token}
-        )
+
+        class ResponseInfo:
+            def __init__(self):
+                self.status = 200
+
+            async def json(self):
+                return {"provider": ""}
+
+        return ResponseInfo()
+        # return await self.websession.get(
+        #    self.subscription_info_url, headers={"authorization": self.id_token}
+        # )
 
     async def login(self, email: str, password: str) -> None:
         """Log a user in."""
