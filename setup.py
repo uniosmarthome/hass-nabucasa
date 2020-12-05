@@ -1,6 +1,6 @@
 from setuptools import setup
 
-VERSION = "0.37.0"
+VERSION = "0.38.0"
 
 setup(
     name="hass-uniocloud",
@@ -29,11 +29,11 @@ setup(
     install_requires=[
         "pycognito==0.1.4",
         "snitun==0.20",
-        "acme==1.8.0",
+        "acme==1.9.0",
         "cryptography>=2.8,<4.0",
-        "attrs>=19.3,<20.2",
+        "attrs>=19.3,<20.4",
         "pytz>=2019.3",
-        "aiohttp~=3.6.1",
+        "aiohttp>=3.6.1",
         "atomicwrites==1.4.0",
     ],
 )
