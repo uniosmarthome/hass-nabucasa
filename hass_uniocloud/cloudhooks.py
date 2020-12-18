@@ -29,46 +29,24 @@ class Cloudhooks:
 
     async def async_create(self, webhook_id: str, managed: bool) -> Dict[str, Any]:
         """Create a cloud webhook."""
-        cloudhooks = self.cloud.client.cloudhooks
 
-        if webhook_id in cloudhooks:
-            raise ValueError("Hook is already enabled for the cloud.")
+        cloudhook_id = webhook_id
+        cloudhook_url = "https://server.sni.uniosmarthome.com"
 
-        if not self.cloud.iot.connected:
-            raise ValueError("Cloud is not connected")
-
-        # Create cloud hook
-        with async_timeout.timeout(10):
-            resp = await cloud_api.async_create_cloudhook(self.cloud)
-
-        resp.raise_for_status()
-        data = await resp.json()
-        cloudhook_id = data["cloudhook_id"]
-        cloudhook_url = data["url"]
-
-        # Store hook
-        cloudhooks = dict(cloudhooks)
-        hook = cloudhooks[webhook_id] = {
+        try:
+            remote_ui_url = self.cloud.async_remote_ui_url()
+        except:
+            pass
+     
+        hook = {
             "webhook_id": webhook_id,
             "cloudhook_id": cloudhook_id,
             "cloudhook_url": cloudhook_url,
             "managed": managed,
         }
-        await self.cloud.client.async_cloudhooks_update(cloudhooks)
-
-        await self.async_publish_cloudhooks()
+ 
         return hook
 
     async def async_delete(self, webhook_id: str) -> None:
         """Delete a cloud webhook."""
-        cloudhooks = self.cloud.client.cloudhooks
-
-        if webhook_id not in cloudhooks:
-            raise ValueError("Hook is not enabled for the cloud.")
-
-        # Remove hook
-        cloudhooks = dict(cloudhooks)
-        cloudhooks.pop(webhook_id)
-        await self.cloud.client.async_cloudhooks_update(cloudhooks)
-
-        await self.async_publish_cloudhooks()
+        
