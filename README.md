@@ -1,3 +1,3 @@
-[![Build Status](https://dev.azure.com/NabuCasa/OpenSource/_apis/build/status/hass-nabucasa?branchName=dev)](https://dev.azure.com/NabuCasa/OpenSource/_build/latest?definitionId=2&branchName=dev)
+![Release](https://github.com/uniosmarthome/hass-uniocloud/actions/workflows/release.yml/badge.svg)
 
-## Cloud integration in Home Assistant
+## Unio Cloud integration in Home Assistant
