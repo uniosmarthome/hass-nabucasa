@@ -59,7 +59,7 @@ class Cloud:
         self.remote = RemoteUI(self)
         self.auth = CognitoAuth(self)
         self.voice = Voice(self)
-
+        self.access_scopes = []
         # Set reference
         self.client.cloud = self
 
@@ -84,6 +84,7 @@ class Cloud:
         self.cognito_client_id = info["cognito_client_id"]
         self.user_pool_id = info["user_pool_id"]
         self.region = info["region"]
+        self.access_scopes = info["access_scopes"]
         self.relayer = info["relayer"]
         self.google_actions_report_state_url = info["google_actions_report_state_url"]
         self.subscription_info_url = info["subscription_info_url"]

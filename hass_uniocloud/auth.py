@@ -3,6 +3,7 @@ import asyncio
 from functools import partial
 import logging
 import random
+from typing import cast
 
 import boto3
 import botocore
@@ -70,6 +71,24 @@ class CognitoAuth:
 
         cloud.iot.register_on_connect(self.on_connect)
         cloud.iot.register_on_disconnect(self.on_disconnect)
+
+    def is_cloud_iss(self, iss: str):
+        return "cognito" in iss
+
+    def is_valid_cloud_access(self, token: str):
+        """Checks Cloud access token & its scope."""
+        try:
+            cognito = self._authenticated_cognito
+            verified = cognito.verify_token(token, "access_token", "access")
+            username = cast(str, verified.get("username"))
+            scope = cast(str, verified.get("scope"))
+            return self.cloud.username != username and (
+                not self.cloud.access_scopes or scope in self.cloud.access_scopes
+            )
+        except (Unauthenticated, pycognito.TokenVerificationException) as err:
+            _LOGGER.error("Invalid access token:: %s", err)
+            return False
+        return False
 
     async def _async_handle_token_refresh(self):
         """Handle Cloud access token refresh."""

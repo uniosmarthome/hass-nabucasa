@@ -1,10 +1,6 @@
 """Manage cloud cloudhooks."""
 from typing import Dict, Any
 
-import async_timeout
-
-from . import cloud_api
-
 
 class Cloudhooks:
     """Class to help manage cloudhooks."""
@@ -33,20 +29,14 @@ class Cloudhooks:
         cloudhook_id = webhook_id
         cloudhook_url = "https://server.sni.uniosmarthome.com"
 
-        try:
-            remote_ui_url = self.cloud.async_remote_ui_url()
-        except:
-            pass
-     
         hook = {
             "webhook_id": webhook_id,
             "cloudhook_id": cloudhook_id,
             "cloudhook_url": cloudhook_url,
             "managed": managed,
         }
- 
+
         return hook
 
     async def async_delete(self, webhook_id: str) -> None:
         """Delete a cloud webhook."""
-        
