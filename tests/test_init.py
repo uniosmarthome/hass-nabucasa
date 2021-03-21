@@ -15,6 +15,7 @@ def test_constructor_loads_info_from_constant(cloud_client):
                 "cognito_client_id": "test-cognito_client_id",
                 "user_pool_id": "test-user_pool_id",
                 "region": "test-region",
+                "access_scopes": ["app/test-access"],
                 "relayer": "test-relayer",
                 "subscription_info_url": "test-subscription-info-url",
                 "cloudhook_create_url": "test-cloudhook_create_url",
@@ -174,7 +175,9 @@ def test_write_user_info(cloud_client):
     cl.access_token = "test-access-token"
     cl.refresh_token = "test-refresh-token"
 
-    with patch("pathlib.Path.chmod"), patch("hass_uniocloud.atomic_write") as mock_write:
+    with patch("pathlib.Path.chmod"), patch(
+        "hass_uniocloud.atomic_write"
+    ) as mock_write:
         cl.write_user_info()
 
     mock_file = mock_write.return_value.__enter__.return_value

@@ -5,7 +5,7 @@ import pprint
 import random
 from typing import Awaitable, Callable, List
 
-from aiohttp import WSMsgType, client_exceptions, hdrs
+from aiohttp import WSMsgType, client_exceptions
 
 from .auth import CloudError
 from .const import (

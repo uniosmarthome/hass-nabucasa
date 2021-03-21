@@ -22,6 +22,19 @@ def aws_error(code, message="Unknown", operation_name="fake_operation_name"):
     return ClientError(response, operation_name)
 
 
+async def test_is_cloud_iss(mock_cognito, mock_cloud):
+    """Test trying to check iss."""
+    auth = auth_api.CognitoAuth(mock_cloud)
+    assert not auth.is_cloud_iss("45564dfdf")
+    assert auth.is_cloud_iss("blabla_cognito__")
+
+
+async def test_is_invalid_cloud_access(mock_cognito, mock_cloud):
+    """Test trying to check iss."""
+    auth = auth_api.CognitoAuth(mock_cloud)
+    assert not auth.is_valid_cloud_access("token")
+
+
 async def test_login_invalid_auth(mock_cognito, mock_cloud):
     """Test trying to login with invalid credentials."""
     auth = auth_api.CognitoAuth(mock_cloud)

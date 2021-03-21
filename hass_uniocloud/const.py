@@ -20,17 +20,18 @@ SERVERS = {
         "cognito_client_id": "66srmrqakinvc3fd8lh7gulm9g",
         "user_pool_id": "us-east-1_vzZfERFLP",
         "region": "us-east-1",
+        "access_scopes": ["home-assistant/cloud-access"],
         "relayer": "wss://cloud.uniosmarthome.com/websocket",
-        "google_actions_report_state_url": "https://remotestate.nabucasa.com",
+        "google_actions_report_state_url": "https://remotestate.uniosmarthome.com",
         "subscription_info_url": (
             "https://cloud.uniosmarthome.com/payments/" "subscription_info"
         ),
-        "cloudhook_create_url": "https://webhooks-api.nabucasa.com/generate",
+        "cloudhook_create_url": "https://webhooks-api.uniosmarthome.com/generate",
         "remote_api_url": "https://cloud.uniosmarthome.com/remote",
-        "alexa_access_token_url": "https://alexa-api.nabucasa.com/access_token",
-        "account_link_url": "https://account-link.nabucasa.com",
-        "voice_api_url": "https://voice-api.nabucasa.com",
-        "thingtalk_url": "https://thingtalk-api.nabucasa.com",
+        "alexa_access_token_url": "https://alexa-api.uniosmarthome.com/access_token",
+        "account_link_url": "https://account-link.uniosmarthome.com",
+        "voice_api_url": "https://voice-api.uniosmarthome.com",
+        "thingtalk_url": "https://thingtalk-api.uniosmarthome.com",
         "acme_directory_server": "https://acme-v02.api.letsencrypt.org/directory",
     }
 }
