@@ -82,8 +82,8 @@ class CognitoAuth:
             verified = cognito.verify_token(token, "access_token", "access")
             username = cast(str, verified.get("username"))
             scope = cast(str, verified.get("scope"))
-            return self.cloud.username != username and (
-                not self.cloud.access_scopes or scope in self.cloud.access_scopes
+            return self.cloud.username == username and (
+                self.cloud.access_scopes and scope in self.cloud.access_scopes
             )
         except (Unauthenticated, pycognito.TokenVerificationException) as err:
             _LOGGER.error("Invalid access token:: %s", err)
