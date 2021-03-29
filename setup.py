@@ -1,6 +1,6 @@
 from setuptools import setup
 
-VERSION = "0.1.2"
+VERSION = "0.1.3"
 
 setup(
     name="hass-uniocloud",
@@ -9,7 +9,9 @@ setup(
     author="UNIO Smart Home",
     author_email="developers@freshminds.com.br",
     url="https://www.uniosmarthome.com",
-    download_url="https://github.com/uniosmarthome/hass-uniocloud/tarball/{}".format(VERSION),
+    download_url="https://github.com/uniosmarthome/hass-uniocloud/tarball/{}".format(
+        VERSION
+    ),
     description=("Home Assistant cloud integration by UNIO Smart Home"),
     long_description=(""),
     classifiers=[
