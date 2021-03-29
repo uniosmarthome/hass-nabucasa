@@ -75,11 +75,13 @@ class CognitoAuth:
     def is_cloud_iss(self, iss: str):
         return "cognito" in iss
 
-    def is_valid_cloud_access(self, token: str):
+    async def is_valid_cloud_access(self, token: str):
         """Checks Cloud access token & its scope."""
         try:
             cognito = self._authenticated_cognito
-            verified = cognito.verify_token(token, "access_token", "access")
+            verified = await self.cloud.run_executor(
+                cognito.verify_token, token, "access_token", "access"
+            )
             username = cast(str, verified.get("username"))
             scope = cast(str, verified.get("scope"))
             return self.cloud.username == username and (

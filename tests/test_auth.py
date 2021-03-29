@@ -32,7 +32,47 @@ async def test_is_cloud_iss(mock_cognito, mock_cloud):
 async def test_is_invalid_cloud_access(mock_cognito, mock_cloud):
     """Test trying to check iss."""
     auth = auth_api.CognitoAuth(mock_cloud)
-    assert not auth.is_valid_cloud_access("token")
+    assert not await auth.is_valid_cloud_access("token")
+
+
+async def test_is_valid_cloud_access(mock_cognito, mock_cloud):
+    """Test trying to check iss."""
+    auth = auth_api.CognitoAuth(mock_cloud)
+    mock_cloud.username = "user"
+    mock_cloud.access_scopes = ["black", "blue"]
+    mock_cognito.verify_token.return_value = {
+        "username": "user",
+        "scope": "blue",
+    }
+    assert await auth.is_valid_cloud_access("token")
+
+
+async def test_has_exception_cloud_access(mock_cognito, mock_cloud):
+    """Test trying to check iss."""
+    auth = auth_api.CognitoAuth(mock_cloud)
+    mock_cloud.username = "user"
+    mock_cloud.access_scopes = ["black", "blue"]
+    mock_cognito.verify_token.return_value = {
+        "username": "user",
+        "scope": "blue",
+    }
+    mock_cognito.verify_token.side_effect = auth_api.Unauthenticated(
+        "No authentication found"
+    )
+    assert not await auth.is_valid_cloud_access("token")
+
+
+async def test_invalid_scope_cloud_access(mock_cognito, mock_cloud):
+    """Test trying to check iss."""
+    auth = auth_api.CognitoAuth(mock_cloud)
+    mock_cloud.username = "user"
+    mock_cloud.access_scopes = ["black", "blue"]
+    mock_cognito.verify_token.return_value = {
+        "username": "user",
+        "scope": "other",
+    }
+
+    assert not await auth.is_valid_cloud_access("token")
 
 
 async def test_login_invalid_auth(mock_cognito, mock_cloud):
